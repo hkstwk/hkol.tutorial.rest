@@ -8,7 +8,7 @@ public class V1_status {
 	
 	private static final String api_version = "00.01.00";
 
-	@POST
+	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String returnTitle(){
 		return "<p>Java REST Web Service</p>";
