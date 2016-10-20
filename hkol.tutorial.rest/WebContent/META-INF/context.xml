@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+    <Resource
+        name="jdbc/db" 
+        type="javax.sql.DataSource"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        url="jdbc:mysql://mysqlinstance.cgvxz5qn8tke.eu-west-1.rds.amazonaws.com:3306/restservice"
+        driverClassName="com.mysql.jdbc.Driver"
+        username="hkol" 
+        password="awstester1"
+    />
+</Context>
