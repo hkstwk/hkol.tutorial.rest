@@ -12,6 +12,7 @@ import hkol.tutorial.database.*;
 public class V1_status {
 	
 	private static final String api_version = "00.02.00";
+	private static Integer count = 0;
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
@@ -31,23 +32,21 @@ public class V1_status {
 	@Produces(MediaType.TEXT_HTML)
 	public String returnDatabaseStatus() throws Exception {
 		PreparedStatement query = null;
-		String myString = null;
+		String myString = "";
 		String returnString = "<p>database status, lege string</p>";
 		Connection conn = null;
 		
 		try {
 			conn = AWSMySql.MySqlRestConn().getConnection();
+			System.out.println("hello world " + conn.toString());
 			query = conn.prepareStatement("select * from Persons;");
 			ResultSet rs = query.executeQuery();
 			
-			int count = 1;
             while (rs.next()) {
-               myString = (String.format("User #%d: %-15s %s", count++,
-                        rs.getString("FirstName"), rs.getString("LastName")));
-                 
+               myString += rs.getString("FirstName") + " " + rs.getString("LastName") + "<br>";
             }
 			query.close();
-			returnString = "<p>Database Status -> Date/Time return: " + myString + "</p>";
+			returnString = "<p>" + count++ + "</p><p>Contents of table Persons:</p><p>" + myString + "</p>";
 		}
 		catch (Exception e){
 			e.printStackTrace();

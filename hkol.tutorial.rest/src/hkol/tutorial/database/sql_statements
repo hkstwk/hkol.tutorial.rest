@@ -8,4 +8,4 @@ City varchar(255)
 );
 
 INSERT INTO Persons
-VALUES (1, 'Kolvoort', 'Harm', 'De wiende 22', 'Steenwijk');
+VALUES (2, 'Verstappen', 'Max', 'Kustweg', 'Monaco');
