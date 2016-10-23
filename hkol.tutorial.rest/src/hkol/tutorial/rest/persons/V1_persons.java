@@ -20,11 +20,12 @@ public class V1_persons {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String returnAllPersons() throws Exception {
+	public Response returnAllPersons() throws Exception {
 		
 		PreparedStatement query = null;
 		String returnString = null;;
 		Connection conn = null;
+		Response response = null;
 		
 		try {
 			conn = AWSMySql.MySqlRestConn().getConnection();
@@ -38,6 +39,7 @@ public class V1_persons {
 			query.close();
 			
 			returnString = json.toString();
+			response = Response.ok(returnString).build();
             
 		}
 		catch (Exception e){
@@ -47,6 +49,6 @@ public class V1_persons {
 			if (conn != null) conn.close();
 		}
 		
-		return returnString;
+		return response;
 	}
 }

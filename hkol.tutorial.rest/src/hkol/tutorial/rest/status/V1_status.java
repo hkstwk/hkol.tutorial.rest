@@ -3,7 +3,6 @@ package hkol.tutorial.rest.status;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import java.io.PrintWriter;
 import java.sql.*;
 
 import hkol.tutorial.database.*;
@@ -38,7 +37,6 @@ public class V1_status {
 		
 		try {
 			conn = AWSMySql.MySqlRestConn().getConnection();
-			System.out.println("hello world " + conn.toString());
 			query = conn.prepareStatement("select * from Persons;");
 			ResultSet rs = query.executeQuery();
 			
