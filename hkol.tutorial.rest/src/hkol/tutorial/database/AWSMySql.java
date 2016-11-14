@@ -1,5 +1,7 @@
 package hkol.tutorial.database;
 
+import java.sql.Connection;
+
 import javax.naming.*;
 import javax.sql.*;
 
@@ -25,5 +27,17 @@ public class AWSMySql {
 		}
 		
 		return MySqlRest;
+	}
+	
+	protected static Connection mysqlPersonsConnection(){
+		Connection conn= null;
+		try{
+			conn = AWSMySql.MySqlRestConn().getConnection();
+			return conn;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return conn;
 	}
 }

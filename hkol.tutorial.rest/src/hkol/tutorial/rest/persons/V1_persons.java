@@ -23,7 +23,7 @@ public class V1_persons {
 	public Response returnAllPersons() throws Exception {
 		
 		PreparedStatement query = null;
-		String returnString = null;;
+		String returnString = null;
 		Connection conn = null;
 		Response response = null;
 		
