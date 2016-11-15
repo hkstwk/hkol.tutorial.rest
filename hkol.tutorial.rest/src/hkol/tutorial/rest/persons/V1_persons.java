@@ -1,8 +1,6 @@
 package hkol.tutorial.rest.persons;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import static com.mongodb.client.model.Filters.eq;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -10,10 +8,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jettison.json.JSONArray;
+import org.bson.Document;
 
-import hkol.tutorial.database.AWSMySql;
-import hkol.tutorial.util.ToJSON;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoDatabase;
+
+import hkol.tutorial.database.DBConnector;
 
 @Path("/v1/persons")
 public class V1_persons {
@@ -22,31 +23,25 @@ public class V1_persons {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response returnAllPersons() throws Exception {
 		
-		PreparedStatement query = null;
-		String returnString = null;
-		Connection conn = null;
-		Response response = null;
+		MongoClient mongoClient = null;
+		MongoDatabase db = null;
+		
+		FindIterable<Document> result = null;
+		Response response = Response.ok("Hi there").build();
 		
 		try {
-			conn = AWSMySql.MySqlRestConn().getConnection();
-			query = conn.prepareStatement("select * from Persons");
-			ResultSet rs = query.executeQuery();
+			mongoClient = DBConnector.getMongoClient("localhost", 27017);
+			db = DBConnector.getMongoDatabase(mongoClient, "test");
 			
-			ToJSON converter = new ToJSON();
-			JSONArray json = new JSONArray();
-			
-			json = converter.toJSONArray(rs);
-			query.close();
-			
-			returnString = json.toString();
-			response = Response.ok(returnString).build();
+			result = db.getCollection("restaurants").find(eq("borough", "Manhattan"));
+			response = Response.ok(result.toString()).build();
             
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
 		finally {
-			if (conn != null) conn.close();
+			if (mongoClient != null) mongoClient.close();
 		}
 		
 		return response;

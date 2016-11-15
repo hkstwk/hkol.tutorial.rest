@@ -1,17 +1,20 @@
 package hkol.tutorial.rest.status;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import java.sql.*;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 
-import hkol.tutorial.database.*;
+import hkol.tutorial.database.DBConnector;
 
 @Path("/v1/status/")
 public class V1_status {
 	
 	private static final String api_version = "00.02.00";
-	private static Integer count = 0;
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
@@ -29,31 +32,27 @@ public class V1_status {
 	@Path("/database")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String returnDatabaseStatus() throws Exception {
-		PreparedStatement query = null;
-		String myString = "";
-		String returnString = "<p>database status, lege string</p>";
-		Connection conn = null;
+	public Response returnDatabaseStatus() throws Exception {
+		MongoClient mongoClient = null;
+		MongoDatabase db = null;
+		Response response = Response.ok("Hi there").build();
+		String result = null;
 		
 		try {
-			conn = AWSMySql.MySqlRestConn().getConnection();
-			query = conn.prepareStatement("select * from Persons;");
-			ResultSet rs = query.executeQuery();
-			
-            while (rs.next()) {
-               myString += rs.getString("FirstName") + " " + rs.getString("LastName") + "<br>";
-            }
-			query.close();
-			returnString = "<p>" + count++ + "</p><p>Contents of table Persons:</p><p>" + myString + "</p>";
+				mongoClient = DBConnector.getMongoClient("localhost", 27017);
+				db = DBConnector.getMongoDatabase(mongoClient, "test");
+				
+				result = db.getName();
+				response = Response.ok(result.toString()).build();
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
 		finally {
-			if (conn != null) conn.close();
+			if (mongoClient != null) mongoClient.close();
 		}
 		
-		return returnString;
+		return response;
 	}
 	
 }
