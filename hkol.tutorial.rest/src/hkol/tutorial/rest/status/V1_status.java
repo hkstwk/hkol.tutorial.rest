@@ -35,7 +35,7 @@ public class V1_status {
 	public Response returnDatabaseStatus() throws Exception {
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
-		Response response = Response.ok("Hi there").build();
+		Response response = null;
 		String result = null;
 		
 		try {
@@ -43,7 +43,7 @@ public class V1_status {
 				db = DBConnector.getMongoDatabase(mongoClient, "test");
 				
 				result = db.getName();
-				response = Response.ok(result.toString()).build();
+				response = Response.ok("Hello there! You're connected to databse " + result.toString()).build();
 		}
 		catch (Exception e){
 			e.printStackTrace();
