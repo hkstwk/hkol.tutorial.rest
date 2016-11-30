@@ -1,6 +1,4 @@
-package hkol.tutorial.rest.persons;
-
-import static com.mongodb.client.model.Filters.eq;
+package hkol.tutorial.tracker;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -19,8 +17,8 @@ import com.mongodb.client.MongoDatabase;
 
 import hkol.tutorial.database.DBConnector;
 
-@Path("/v1/persons")
-public class V1_persons {
+@Path("/v1/tickets")
+public class V1_tickets {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +35,7 @@ public class V1_persons {
 			mongoClient = DBConnector.getMongoClient("localhost", 27017);
 			db = DBConnector.getMongoDatabase(mongoClient, "test");
 			
-			iterable = db.getCollection("restaurants").find(eq("borough", "Manhattan")).limit(100);
+			iterable = db.getCollection("tickets").find().limit(100);
 			
 			for (Document document : iterable) {
 			    result += document.toJson();
@@ -59,12 +57,12 @@ public class V1_persons {
 	
 	@POST
 	@Path("/new")
-	@Consumes("application/x-www-form-urlencoded")
-	public Response addPerson(@FormParam("email")String email, @FormParam("pwd")String pwd) throws Exception {
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response addPerson(@FormParam("date")String date, @FormParam("hours")String hours) throws Exception {
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
 		
-		System.out.println(email);
+		System.out.println("hallo daar! De parameters zijn: " + date + " : " + hours);
 		
 		Response response = Response.ok("Hi there this is post").build();
 		String result = "POST: ik heb een record toegevoegd";
@@ -73,7 +71,7 @@ public class V1_persons {
 			mongoClient = DBConnector.getMongoClient("localhost", 27017);
 			db = DBConnector.getMongoDatabase(mongoClient, "test");
 			
-			db.getCollection("persons").insertOne(new Document("fname", email).append("lname", pwd));
+			db.getCollection("tickets").insertOne(new Document("date", date).append("hours", hours));
 						
 			return Response.ok(result).build();
             
