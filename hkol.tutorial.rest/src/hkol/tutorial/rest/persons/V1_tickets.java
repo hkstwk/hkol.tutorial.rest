@@ -1,4 +1,4 @@
-package hkol.tutorial.tracker;
+package hkol.tutorial.rest.persons;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -22,7 +22,7 @@ public class V1_tickets {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response returnAllPersons() throws Exception {
+	public Response returnAllTickets() throws Exception {
 		
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
@@ -57,8 +57,8 @@ public class V1_tickets {
 	
 	@POST
 	@Path("/new")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response addPerson(@FormParam("date")String date, @FormParam("hours")String hours) throws Exception {
+	@Consumes("application/x-www-form-urlencoded")
+	public Response addTicket(@FormParam("date")String date, @FormParam("hours")String hours) throws Exception {
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
 		
