@@ -1,4 +1,4 @@
-package hkol.tutorial.rest.persons;
+package hkol.tutorial.rest.tickets;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
