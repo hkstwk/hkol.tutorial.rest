@@ -13,6 +13,7 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 import hkol.tutorial.database.DBConnector;
@@ -36,10 +37,16 @@ public class V1_tickets {
 			db = DBConnector.getMongoDatabase(mongoClient, "test");
 			
 			iterable = db.getCollection("tickets").find().limit(100);
+			MongoCursor<Document> cursor = iterable.iterator();
 			
-			for (Document document : iterable) {
-			    result += document.toJson();
+			result += "[";
+			while (cursor.hasNext()){
+				result += cursor.next().toJson();
+				if (cursor.hasNext()){
+					result += ",";
+				}
 			}
+			result += "]";
 
 			
 			response = Response.ok(result).build();
