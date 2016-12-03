@@ -1,6 +1,7 @@
 package hkol.tutorial.rest.tickets;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +14,7 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
@@ -28,7 +30,6 @@ public class V1_tickets {
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
 		
-		Response response = Response.ok("Hi there this is GET").build();
 		FindIterable<Document> iterable = null;
 		String result = "";
 		
@@ -48,50 +49,41 @@ public class V1_tickets {
 			}
 			result += "]";
 
-			
-			response = Response.ok(result).build();
-            
+			return Response.ok(result).build();
 		}
 		catch (Exception e){
-			e.printStackTrace();
+			return Response.serverError().build();
 		}
 		finally {
 			if (mongoClient != null) mongoClient.close();
 		}
-		
-		return response;
 	}
 	
 	@POST
 	@Path("/new")
 	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addTicket(@FormParam("date")String date, @FormParam("hours")String hours) throws Exception {
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
-		
-		System.out.println("hallo daar! De parameters zijn: " + date + " : " + hours);
-		
-		Response response = Response.ok("Hi there this is post").build();
-		String result = "POST: ik heb een record toegevoegd";
+	    MongoCollection<Document> coll = null;
 		
 		try {
 			mongoClient = DBConnector.getMongoClient("localhost", 27017);
-			db = DBConnector.getMongoDatabase(mongoClient, "test");
+			db = mongoClient.getDatabase("test");
+			coll = db.getCollection("tickets");
 			
-			db.getCollection("tickets").insertOne(new Document("date", date).append("hours", hours));
+			Document doc = new Document("date", date).append("hours", hours);
+			
+			coll.insertOne(doc);
 						
-			return Response.ok(result).build();
-            
+			return Response.ok(doc.toJson()).build();
 		}
 		catch (Exception e){
-			e.printStackTrace();
+			return Response.serverError().build();
 		}
 		finally {
 			if (mongoClient != null) mongoClient.close();
 		}
-		
-		return response;
 	}
-	
-	
 }
