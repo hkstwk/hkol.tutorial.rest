@@ -17,10 +17,12 @@ import org.bson.Document;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import com.mongodb.WriteResult;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 
 import hkol.tutorial.database.DBConnector;
 
@@ -110,6 +112,34 @@ public class V1_tickets {
 			System.out.println(query.toJson());
 			String result = coll.deleteOne(query).toString();
 			return Response.ok(result).build();
+	    }
+	    catch (Exception e){
+	    	return Response.notModified("Oops, something went wrong deleting your ticket...").build();
+	    }
+		finally {
+			if (mongoClient != null) mongoClient.close();
+		}
+	}
+	
+	@DELETE
+	@Path("/delete/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response deleteTicketId(@PathParam("id") String id){
+		MongoClient mongoClient = null;
+		MongoDatabase db = null;
+	    MongoCollection<Document> coll = null;
+	    DeleteResult result = null;
+		
+	    try{
+	    	mongoClient = DBConnector.getMongoClient("localhost", 27017);
+			db = mongoClient.getDatabase("test");
+			coll = db.getCollection("tickets");
+			
+			BasicDBObject query = new BasicDBObject();
+			query.put("_id", new BasicDBObject("$eq", new BasicDBObject("$oid", id)));
+			System.out.println(query.toJson());
+			result = coll.deleteOne(query);
+			return Response.ok(result.getDeletedCount()).build();
 	    }
 	    catch (Exception e){
 	    	return Response.notModified("Oops, something went wrong deleting your ticket...").build();
