@@ -6,12 +6,16 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.transform.Result;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -86,4 +90,33 @@ public class V1_tickets {
 			if (mongoClient != null) mongoClient.close();
 		}
 	}
+	
+	@DELETE
+	@Path("/delete")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response deleteTicket(@FormParam("date") String date){
+		MongoClient mongoClient = null;
+		MongoDatabase db = null;
+	    MongoCollection<Document> coll = null;
+		
+	    try{
+	    	mongoClient = DBConnector.getMongoClient("localhost", 27017);
+			db = mongoClient.getDatabase("test");
+			coll = db.getCollection("tickets");
+			
+			BasicDBObject query = new BasicDBObject();
+			query.put("date", date);
+			System.out.println(query.toJson());
+			String result = coll.deleteOne(query).toString();
+			return Response.ok(result).build();
+	    }
+	    catch (Exception e){
+	    	return Response.notModified("Oops, something went wrong deleting your ticket...").build();
+	    }
+		finally {
+			if (mongoClient != null) mongoClient.close();
+		}
+	}
+	
 }
