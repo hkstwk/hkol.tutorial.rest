@@ -12,7 +12,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.transform.Result;
 
+import org.bson.BsonDocument;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -60,6 +62,42 @@ public class V1_tickets {
 		catch (Exception e){
 			return Response.serverError().build();
 		}
+		finally {
+			if (mongoClient != null) mongoClient.close();
+		}
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response returnTickets(@PathParam("id") String id) throws Exception {
+		MongoClient mongoClient = null;
+		MongoDatabase db = null;
+	    MongoCollection<Document> coll = null;
+	    FindIterable<Document> iterable = null;
+		
+	    try{
+	    	mongoClient = DBConnector.getMongoClient("localhost", 27017);
+			db = mongoClient.getDatabase("test");
+			coll = db.getCollection("tickets");
+			
+			BasicDBObject query = new BasicDBObject();
+			query.put("_id", new ObjectId(id));
+			System.out.println(query.toJson());
+			iterable = coll.find(query);
+			
+			MongoCursor<Document> cursor = iterable.iterator();
+			String ticketFound = "";
+			
+			while (cursor.hasNext()){
+				ticketFound = cursor.next().toJson();
+			}
+						
+			return Response.ok(ticketFound).build();
+	    }
+	    catch (Exception e){
+	    	return Response.notModified("Oops, something went wrong getting your ticket with id : " + id).build();
+	    }
 		finally {
 			if (mongoClient != null) mongoClient.close();
 		}
@@ -136,10 +174,12 @@ public class V1_tickets {
 			coll = db.getCollection("tickets");
 			
 			BasicDBObject query = new BasicDBObject();
-			query.put("_id", new BasicDBObject("$eq", new BasicDBObject("$oid", id)));
+			query.put("_id", new ObjectId(id));
 			System.out.println(query.toJson());
+			
+			
 			result = coll.deleteOne(query);
-			return Response.ok(result.getDeletedCount()).build();
+			return Response.ok(result.toString()).build();
 	    }
 	    catch (Exception e){
 	    	return Response.notModified("Oops, something went wrong deleting your ticket...").build();
