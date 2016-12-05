@@ -131,10 +131,11 @@ public class V1_tickets {
 	@Path("/delete")
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response deleteTicket(@FormParam("date") String date){
+	public Response deleteTicket(@FormParam("id") String id){
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
 	    MongoCollection<Document> coll = null;
+	    DeleteResult result = null;
 		
 	    try{
 	    	mongoClient = DBConnector.getMongoClient("localhost", 27017);
@@ -142,13 +143,15 @@ public class V1_tickets {
 			coll = db.getCollection("tickets");
 			
 			BasicDBObject query = new BasicDBObject();
-			query.put("date", date);
+			query.put("_id", new ObjectId(id));
 			System.out.println(query.toJson());
-			String result = coll.deleteOne(query).toString();
-			return Response.ok(result).build();
+			
+			
+			result = coll.deleteOne(query);
+			return Response.ok(result.toString() + " " + id).build();
 	    }
 	    catch (Exception e){
-	    	return Response.notModified("Oops, something went wrong deleting your ticket...").build();
+	    	return Response.notModified("Oops, something went wrong deleting your ticket " + id).build();
 	    }
 		finally {
 			if (mongoClient != null) mongoClient.close();
@@ -175,10 +178,10 @@ public class V1_tickets {
 			
 			
 			result = coll.deleteOne(query);
-			return Response.ok(result.toString()).build();
+			return Response.ok(result.toString() + " " + id).build();
 	    }
 	    catch (Exception e){
-	    	return Response.notModified("Oops, something went wrong deleting your ticket...").build();
+	    	return Response.notModified("Oops, something went wrong deleting your ticket " + id).build();
 	    }
 		finally {
 			if (mongoClient != null) mongoClient.close();
