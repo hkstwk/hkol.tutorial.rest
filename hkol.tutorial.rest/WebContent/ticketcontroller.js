@@ -1,10 +1,5 @@
 var app = angular.module('app',['ngResource']);
 
-//app.controller('TicketCtl', function($scope, $http) {
-//    $http.get("http://localhost:8080/hkol.tutorial.rest/api/v1/tickets")
-//    .then(function (response) {$scope.tickets = response.data;});
-//});
-
 app.controller('TicketCtl', function($scope, $http, TicketService) {
     
 	// GET all tickets
@@ -28,9 +23,4 @@ app.factory('TicketService', function ($resource) {
     return $resource('http://localhost:8080/hkol.tutorial.rest/api/v1/tickets/:ticket',{ticket: "@ticket"});
 });
 
-
-
-//app.factory('TicketService', function ($resource) {
-//    return $resource('http://jsonplaceholder.typicode.com/users/:user',{user: "@user"});
-//});
 
