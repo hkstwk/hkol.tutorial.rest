@@ -12,7 +12,7 @@ app.controller('TicketCtl', function($scope, $http, TicketService) {
     
 	// GET one specific ticket
     $scope.setDataForTicket = function(ticketID) {
-    	$scope.currentTicket = TicketService.get({ticket, ticketID});
+    	$scope.currentTicket = TicketService.get({ticket: ticketID});
     }
 });
 
