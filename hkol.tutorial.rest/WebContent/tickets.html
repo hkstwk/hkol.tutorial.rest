@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.js"></script>
+	<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular-resource.js"></script>
 <script type="text/javascript" src="ticketcontroller.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -27,21 +29,43 @@
 							<th>Id</th>
 							<th>Date</th>
 							<th>Hours</th>
-							<th><span><i class="glyphicon glyphicon-trash"></i></span></th>
+							<th>Action</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr ng-repeat="x in tickets">
-							<td>{{ x._id }}</td>
-							<td>{{ x.date }}</td>
-							<td>{{ x.hours }}</td>
-<!-- 							<td><span><i class="glyphicon glyphicon-trash"></i></span></td> -->
-							<td><button type="button" class="btn btn-default btn-xs">
-  								<span class="glyphicon glyphicon-trash"></span>&nbsp;
-							</button></td>
-						</tr>
-					</tbody>
+						<tbody>
+							<tr ng-repeat="ticket in tickets">
+								<td >{{ ticket._id }}</td>
+								<td>{{ ticket.date }}</td>
+								<td>{{ ticket.hours }}</td>
+<!-- 								<td >{{ x.id }}</td> -->
+<!-- 								<td>{{ x.name }}</td> -->
+<!-- 								<td>{{ x.company.catchPhrase}}</td> -->
+<!-- 								<td><span><i class="glyphicon glyphicon-trash"></i></span></td> -->
+<!-- 								<td><button type="button" class="btn btn-default btn-xs">
+	  								<span class="glyphicon glyphicon-trash"></span>
+								</button></td> -->
+								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" 
+								ng-click="setDataForTicket({{ticket._id.$oid}})">Info
+								</button></td>
+							</tr>
+						</tbody>
 				</table>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Modal header</h3>
+			</div>
+			<div class="modal-body">
+				<p>One fine body...</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 			</div>
 		</div>
 	</div>
