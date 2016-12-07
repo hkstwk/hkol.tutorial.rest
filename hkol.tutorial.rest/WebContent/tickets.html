@@ -38,7 +38,9 @@
 								<td>{{ ticket.date }}</td>
 								<td>{{ ticket.hours }}</td>
 								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" 
-									ng-click="setDataForTicket(ticket._id.$oid)">info</button></td>
+									ng-click="setDataForGetTicket(ticket._id.$oid)">info</button>&nbsp;
+								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myDeleteModal" 
+									ng-click="setDataForDeleteTicket(ticket._id.$oid)">delete</button></td>
 							</tr>
 						</tbody>
 				</table>
@@ -57,6 +59,26 @@
 					</div>
 					<div class="modal-body">
 						<p>{{ currentTicket }}</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+				<!-- Modal -->
+		<div class="modal fade" id="myDeleteModal" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Ticket deleted!</h4>
+					</div>
+					<div class="modal-body">
+						<p>{{ deletedTicket }}</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

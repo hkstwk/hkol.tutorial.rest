@@ -6,9 +6,15 @@ app.controller('TicketCtl', function($scope, $http, TicketService) {
 	$scope.tickets = TicketService.query();
     
 	// GET one specific ticket
-    $scope.setDataForTicket = function(ticketID) {
+    $scope.setDataForGetTicket = function(ticketID) {
     	$scope.currentTicket = TicketService.get({ticket: ticketID});
     }
+    
+ // DELETE one specific ticket
+    $scope.setDataForDeleteTicket = function(ticketID) {
+    	$scope.deletedTicket = TicketService.delete({ticket: ticketID});
+    }
+    
 });
 
 app.controller('DeleteCtl', function($scope, $http) {

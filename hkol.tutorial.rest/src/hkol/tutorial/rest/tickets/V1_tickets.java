@@ -159,7 +159,7 @@ public class V1_tickets {
 	}
 	
 	@DELETE
-	@Path("/delete/{id}")
+	@Path("/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response deleteTicketId(@PathParam("id") String id){
 		MongoClient mongoClient = null;
