@@ -10,11 +10,15 @@ app.controller('TicketCtl', function($scope, $http, TicketService) {
     	$scope.currentTicket = TicketService.get({ticket: ticketID});
     }
     
- // DELETE one specific ticket
+    // DELETE one specific ticket
     $scope.setDataForDeleteTicket = function(ticketID) {
     	$scope.deletedTicket = TicketService.delete({ticket: ticketID});
     }
     
+    // REMOVE item from ng-repeat array. Example use: refresh array after deleting 1 item in database
+    $scope.remove = function(array, index){
+        array.splice(index, 1);
+    }
 });
 
 app.controller('DeleteCtl', function($scope, $http) {
@@ -28,5 +32,3 @@ app.controller('DeleteCtl', function($scope, $http) {
 app.factory('TicketService', function ($resource) {
     return $resource('http://localhost:8080/hkol.tutorial.rest/api/v1/tickets/:ticket',{ticket: "@ticket"});
 });
-
-

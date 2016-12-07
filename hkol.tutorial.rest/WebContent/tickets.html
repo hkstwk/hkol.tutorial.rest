@@ -40,7 +40,7 @@
 								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" 
 									ng-click="setDataForGetTicket(ticket._id.$oid)">info</button>&nbsp;
 								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myDeleteModal" 
-									ng-click="setDataForDeleteTicket(ticket._id.$oid)">delete</button></td>
+									ng-click="setDataForDeleteTicket(ticket._id.$oid);remove(tickets, $index)">delete</button></td>
 							</tr>
 						</tbody>
 				</table>

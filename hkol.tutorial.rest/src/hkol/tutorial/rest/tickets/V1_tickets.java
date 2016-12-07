@@ -160,7 +160,7 @@ public class V1_tickets {
 	
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteTicketId(@PathParam("id") String id){
 		MongoClient mongoClient = null;
 		MongoDatabase db = null;
@@ -178,7 +178,7 @@ public class V1_tickets {
 			
 			
 			result = coll.deleteOne(query);
-			return Response.ok(result.toString() + " " + id).build();
+			return Response.ok(query.toJson()).build();
 	    }
 	    catch (Exception e){
 	    	return Response.notModified("Oops, something went wrong deleting your ticket " + id).build();
