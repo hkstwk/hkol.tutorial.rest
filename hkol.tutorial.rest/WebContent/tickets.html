@@ -22,11 +22,11 @@
 			<h2>Time Tracker - Tickets</h2>
 		</div>
 		<div class="row">
-			<div class="span6 offset3">
+			<div class="col-sm-6">
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th class="hidden">Id</th>
 							<th>Date</th>
 							<th>Hours</th>
 							<th>Action</th>
@@ -34,19 +34,41 @@
 					</thead>
 						<tbody>
 							<tr ng-repeat="ticket in tickets">
-								<td >{{ ticket._id }}</td>
+								<td class="hidden">{{ ticket._id }}</td>
 								<td>{{ ticket.date }}</td>
 								<td>{{ ticket.hours }}</td>
-								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" 
+								<td><button type="button" class="btn btn-primary btn-default" data-toggle="modal" data-target="#myModal" 
 									ng-click="setDataForGetTicket(ticket._id.$oid)">info</button>&nbsp;
-								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myDeleteModal" 
+								<button type="button" class="btn btn-danger btn-default" data-toggle="modal" data-target="#myDeleteModal" 
 									ng-click="setDataForDeleteTicket(ticket._id.$oid);remove(tickets, $index)">delete</button></td>
 							</tr>
 						</tbody>
 				</table>
 			</div>
+			<div class="col-sm-6">
+			<form action="http://localhost:8080/hkol.tutorial.rest/api/v1/tickets/new/" method="post">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i
+								class="glyphicon glyphicon-calendar"></i></span> <input id="date"
+								type="text" class="form-control" name="date" ng-model="date" 
+								placeholder="Date ..." required>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i
+								class="glyphicon glyphicon-time"></i></span> <input id="hours"
+								type="text" class="form-control" name="hours" ng-model="hours" 
+								placeholder="Number of hours ...">
+						</div>
+					</div>
+					<button type="submit" class="btn btn-default btn-block">Submit</button>
+				</form>	
+				<br>	    	
+		    </div>
 		</div>
-
+		
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" role="dialog">
 			<div class="modal-dialog">
