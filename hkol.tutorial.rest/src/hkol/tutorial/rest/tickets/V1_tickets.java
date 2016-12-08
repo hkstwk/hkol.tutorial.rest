@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -114,6 +115,33 @@ public class V1_tickets {
 			coll = db.getCollection("tickets");
 			
 			Document doc = new Document("date", date).append("hours", hours);
+			
+			coll.insertOne(doc);
+						
+			return Response.ok(doc.toJson()).build();
+		}
+		catch (Exception e){
+			return Response.serverError().build();
+		}
+		finally {
+			if (mongoClient != null) mongoClient.close();
+		}
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addTicketJSON(String ticket) throws Exception {
+		MongoClient mongoClient = null;
+		MongoDatabase db = null;
+	    MongoCollection<Document> coll = null;
+		
+		try {
+			mongoClient = DBConnector.getMongoClient("localhost", 27017);
+			db = mongoClient.getDatabase("test");
+			coll = db.getCollection("tickets");
+			
+			Document doc =  Document.parse(ticket);
 			
 			coll.insertOne(doc);
 						

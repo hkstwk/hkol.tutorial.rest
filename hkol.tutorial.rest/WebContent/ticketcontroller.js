@@ -1,7 +1,8 @@
 var app = angular.module('app',['ngResource']);
 
 app.controller('TicketCtl', function($scope, $http, TicketService) {
-    
+   // $scope.ticket = new Ticket();
+	
 	// GET all tickets
 	$scope.tickets = TicketService.query();
     
@@ -18,6 +19,12 @@ app.controller('TicketCtl', function($scope, $http, TicketService) {
     // REMOVE item from ng-repeat array. Example use: refresh array after deleting 1 item in database
     $scope.remove = function(array, index){
         array.splice(index, 1);
+    }
+    
+    $scope.saveTicket = function() {
+    //	$scope.ticket.data = "{ date: " + $scope.date + ", hours: " + $scope.hours + "}";
+    	var response = TicketService.save({date: '10 december 2016', hours: '10'});
+    	$scope.tickets.push(response);	
     }
 });
 

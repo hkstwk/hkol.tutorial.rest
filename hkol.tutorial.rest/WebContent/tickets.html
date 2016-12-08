@@ -22,11 +22,11 @@
 			<h2>Time Tracker - Tickets</h2>
 		</div>
 		<div class="row">
-			<div class="col-sm-6">
-				<table class="table table-bordered table-striped table-hover">
+			<div class="col-sm-9">
+				<table class="table table-bordered table-striped table-hover" ng-show="tickets.length">
 					<thead>
 						<tr>
-							<th class="hidden">Id</th>
+							<th>Id</th>
 							<th>Date</th>
 							<th>Hours</th>
 							<th>Action</th>
@@ -34,7 +34,7 @@
 					</thead>
 						<tbody>
 							<tr ng-repeat="ticket in tickets">
-								<td class="hidden">{{ ticket._id }}</td>
+								<td>{{ ticket._id }}</td>
 								<td>{{ ticket.date }}</td>
 								<td>{{ ticket.hours }}</td>
 								<td><button type="button" class="btn btn-primary btn-default" data-toggle="modal" data-target="#myModal" 
@@ -45,8 +45,9 @@
 						</tbody>
 				</table>
 			</div>
-			<div class="col-sm-6">
-			<form action="http://localhost:8080/hkol.tutorial.rest/api/v1/tickets/new/" method="post">
+			<div class="col-sm-3">
+			<!-- <form action="http://localhost:8080/hkol.tutorial.rest/api/v1/tickets/new/" method="post"> -->
+			<form ng-submit="saveTicket()">
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon"><i
