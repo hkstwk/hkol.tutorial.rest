@@ -23,8 +23,11 @@ app.controller('TicketCtl', function($scope, $http, TicketService) {
     
     $scope.saveTicket = function() {
     //	$scope.ticket.data = "{ date: " + $scope.date + ", hours: " + $scope.hours + "}";
-    	var response = TicketService.save({date: '10 december 2016', hours: '10'});
-    	$scope.tickets.push(response);	
+    	var data = {
+    			date : $scope.date,
+    			hours : $scope.hours
+    	}
+    	$scope.tickets.push(TicketService.save(data));	
     }
 });
 
