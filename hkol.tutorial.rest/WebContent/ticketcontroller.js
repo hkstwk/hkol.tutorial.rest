@@ -1,7 +1,7 @@
 var app = angular.module('app',['ngResource']);
 
-app.controller('TicketCtl', function($scope, $http, TicketService) {
-   // $scope.ticket = new Ticket();
+app.controller('TicketCtl', function($scope, TicketService) {
+	//$scope.ticket = new Ticket();
 	
 	// GET all tickets
 	$scope.tickets = TicketService.query();
@@ -22,7 +22,7 @@ app.controller('TicketCtl', function($scope, $http, TicketService) {
     }
     
     $scope.saveTicket = function() {
-    //	$scope.ticket.data = "{ date: " + $scope.date + ", hours: " + $scope.hours + "}";
+    //	$scope.ticket.data = "{ date: " + $scope.ticket.date + ", hours: " + $scope.ticket.hours + "}";
     	var data = {
     			date : $scope.date,
     			hours : $scope.hours
